@@ -79,7 +79,7 @@ p{ line-height: 1.6; } /* Interlineado*/
 }
 .carousel{
     margin: 2rem auto;
-    padding: 2rem 0;
+    padding: 2rem auto;
     max-width: 50rem;
     text-align: center;
     background-color: var(--carousel--bg-color);
@@ -111,7 +111,7 @@ p{ line-height: 1.6; } /* Interlineado*/
 /* Cuando el id seleccionado este checked, movera el hermano inmediato que tiene al lado. Por eso los inputs debe estar antes que la lista con los slides*/
 /* ~ este simbolo significa el hermano posterior que tiene al lado*/
 /* Los valores del translate va a variar dependieno las cantidades de slides que tengamos */
-#slide-1:checked ~ .slides{
+#slide-1:checked ~ .slides {
     transform: translateX(0%);
 }
 #slide-2:checked ~ .slides{
@@ -221,6 +221,9 @@ p{ line-height: 1.6; } /* Interlineado*/
     font-size: 7.5vw;
     display: flex;
     flex-direction: column;
+}
+.hero-image-content{
+    min-width: 320px;
 }
 
 /* Componentes MENU */
@@ -406,7 +409,7 @@ progress::-moz-progress-bar{
 
 /* Estilos particulares para este proyecto en particular */
 .about > article { margin-bottom: 2rem;}
-.contac-card{
+.contact-card{
     margin: 1rem auto;
     padding: 1rem;
     width: 100%;
@@ -416,12 +419,12 @@ progress::-moz-progress-bar{
     justify-content: space-between;
     align-items: center;
 }
-.contac-card > svg{
+.contact-card > svg{
     fill: var(--first-color);
     width: 2rem;
     height: 2rem;
 }
-.contac-card > small{
+.contact-card > small{
     margin-top: -1rem;
 }
 footer{
@@ -531,7 +534,7 @@ footer{
 /* Media queries */
 @media screen and (min-width:48rem){
     /* 768px */
-    .contac-cards{
+    .contact-cards{
         display: grid;
         /* Aplicamos un 48% para que ese 4% lo podamos separar conel justify-content */
         grid-template-columns: repeat(2, 48%);
@@ -572,7 +575,7 @@ footer{
         /* Sirve para que el grid, en el eje y me alinee el contenido al centro*/
         align-content: center;
     }
-    .contac-cards{
+    .contact-cards{
         grid-template-columns: repeat(4, 24%);
     }
     footer{ margin-bottom: 0;}
