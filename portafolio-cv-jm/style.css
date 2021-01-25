@@ -1,0 +1,599 @@
+/* DRY: Dont Repeat Yourself. Todo lo que se pueda reutilizar, hazlo y no lo vuelvas a escribir */
+
+/* Custome properties */
+:root{
+--first-color:#D90062;
+--first-alpha-color:rgba(217, 0, 98, 0.75);
+--second-color:#14192D;
+--second-alpha-color:rgba(20, 25, 45, 0.75);
+--third-color:#501464;
+--third-alpha-color:rgba(80, 20, 100, 0.75);
+--white:#fff;
+--gray-ligth-color:#f3f3f3;
+--gray-color:#ccc;
+--gray-dark-color:#666;
+--black:#000;
+--link-color:#509ee3;
+--title-color:#333;
+--text-color:#222;
+--white-alpha-color:rgba(255, 255, 255, 0.5);
+--black-alpha-color:rgba(0, 0, 0, 0.5);
+--font:'Raleway', sans-serif;
+--max-width: 75rem;
+--header-height: 4rem;
+}
+
+/* CSS reset sheet */
+html{
+    /* Nos aseguramos que el ancho y alto de una caja va a ir desde el borde y no desde el contenido */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font);
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+*,
+*::after,
+*::before{
+    box-sizing: inherit;
+}
+body{
+    margin: 0;
+    overflow-x: hidden;
+    color: var(--text-color);
+}
+a{
+    color: var(--link-color);
+    transition: all .5s ease-out;
+}
+/* Con esto todos los enlaces tendran las misma transicion */
+a:hover{ opacity: .70;}
+
+/* Todos los encabezados tienen un poco de margen arriba y abajo, dependiendo cada uno. Los vamos a resetear para poner el tamaño que querramos luego */
+h1,h2,h3,h4,h5,h6{ margin: 0;}
+h1{ font-size: 2rem;}
+h2{ font-size: 1.5rem;}
+h3{ font-size: 1.25rem;}
+h4{ font-size: 1rem;}
+h5{ font-size: .85rem;}
+h6{ font-size: .7rem;}
+
+/* Todas las imagenes responsive */
+img{
+    max-width: 100%;
+    height: auto;
+}
+p{ line-height: 1.6; } /* Interlineado*/
+
+
+/* Componentes */
+/* Cada vez que diseño un componente a nivel UI(Figma), voy poniendo los estilos de ese componente, para que si en un futuro utilizo el mismo componente, solo tendre que copiar y pegar el codigo */
+
+/* carousel */
+@keyframes carousel-slide{
+    0%{  transform: translateX(0%); }
+    25%{  transform: translateX(-25%); }
+    50%{  transform: translateX(-50%); }
+    75%{  transform: translateX(-75%);}
+}
+.carousel{
+    margin: 2rem auto;
+    padding: 2rem 0;
+    max-width: 50rem;
+    text-align: center;
+    background-color: var(--carousel--bg-color);
+    overflow-x: hidden;
+}
+.carousel .slides{
+    /* por cada slide que tengamos hay que sumarle 100% al ancho. Nosotros tenemos 4 slides */
+    width: 400%;
+    display: flex;
+    list-style: none;
+    /* Le sacamos el padding de izquierda porque los li viene por default con un padding left mayor */
+    padding-left: 0;
+    transition: transform .5s ease-in-out;
+    animation: carousel-slide 12s ease-in-out 3s;
+}
+
+.carousel input{
+    display: none;
+}
+.carousel label{
+    display: inline-block;
+    width: .75rem;
+    height: .75rem;
+    border: medium solid var(--gray-dark-color);
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0 .25rem;
+}
+/* Cuando el id seleccionado este checked, movera el hermano inmediato que tiene al lado. Por eso los inputs debe estar antes que la lista con los slides*/
+/* ~ este simbolo significa el hermano posterior que tiene al lado*/
+/* Los valores del translate va a variar dependieno las cantidades de slides que tengamos */
+#slide-1:checked ~ .slides{
+    transform: translateX(0%);
+}
+#slide-2:checked ~ .slides{
+    transform: translateX(-25%);
+}
+#slide-3:checked ~ .slides{
+    transform: translateX(-50%);
+}
+#slide-4:checked ~ .slides{
+    transform: translateX(-75%);
+}
+#slide-1:checked ~ .slides-nav label#dot-1,
+#slide-2:checked ~ .slides-nav label#dot-2,
+#slide-3:checked ~ .slides-nav label#dot-3,
+#slide-4:checked ~ .slides-nav label#dot-4{
+    background-color: var(--gray-dark-color);
+}
+
+/* FORMULARIO */
+
+.contact-form{
+    margin: 2rem auto;
+    padding: 1rem;
+    max-width: 50rem;
+}
+.contact-form > *{
+    padding: .5rem;
+    margin: 1rem auto;
+    /* Los inputs son elementos en linea, por eso le damos display block, para que se coloquen uno debajo de otro */
+    display: block;
+    width: 100%;
+}
+.contact-form input,
+.contact-form textarea{
+    font-size: .85rem;
+    font-family: var(--font);
+}
+.contact-form input{
+    border: none;
+    border-bottom: thin solid var(--gray-dark-color);
+    padding-left: 0;
+}
+.contact-form input[type="submit"]{
+    margin-top: 0;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+}
+.contact-form input[type="submit"]:hover{
+    opacity: .75;
+}
+.contact-form textarea{
+    border-bottom: thin solid var(--gray-dark-color);
+    resize: none;
+}
+.contact-form  *::placeholder{
+    color: var(--gray-dark-color);
+}
+.contact-form-response{
+    padding: 1rem;
+    width: 25rem;
+    text-align: center;
+    background-color: var(--white);
+}
+.contact-form-response > svg{
+    margin-top: 2rem;
+    width: 4rem;
+    height: 4rem;
+    fill: var(--first-color);
+}
+.modal[id|="gracias"]:target{
+    opacity: 1;
+    pointer-events: auto;
+}
+@media screen and (min-width:64rem){
+    .contact-form{
+        display: grid;
+        grid-template-columns: repeat(2,1fr);
+        column-gap: 1rem;
+    }
+    .contact-form textarea,
+    .contact-form-loader{  grid-column: 1/3;}
+    .contact-form input[type="submit"]{ margin-left: 0;}
+
+    .contact-form input,
+    .contact-form textarea{ font-size: 1rem; }
+}
+/* Heroe-image */
+.hero-image{
+    /* Esta variable la definimos en el html, y el scope de la misma es solo en ese article. Luego si tenemos que hacer otra hero image, con la misma estructura y clases, solo cambiaremos los valores de la variable style */
+    background-image: var(--hero-image);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    /* Se mueve o no la imagen de fondo cuando scrolleamos */
+    background-attachment: var(--hero-attachment);
+}
+.hero-image-opacity{
+    height: 100vh; 
+    background-color: var(--hero-opacity-color);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero-image-title{
+    color: var(--hero-text-color);
+    font-size: 7.5vw;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Componentes MENU */
+.menu-btn{
+    background-color: var(--second-color);
+    border: 0;
+    outline: none;
+    cursor: pointer;
+}
+.menu-btn svg{
+    /* como se que los svgn tiene la propiedad fill para elegir el color, los selecciono y le agrego el color que quiero a esa propiedad */
+    fill: var(--first-color);
+}
+.menu{
+    /* Al poner fixed pierde sus propiedades de ancho y alto */
+    position: fixed;
+    left: 0;
+    bottom: var(--header-height);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--second-color);
+    opacity: 0;
+    /* Para que los elementos del menu cuando esten con opacidad cero, no funcione el cursor pointer */
+    pointer-events: none;
+    transition: opacity .5s ease;
+}
+.menu.is-active{
+    opacity: 1;
+    pointer-events: auto;
+}
+.menu a{
+    text-decoration: none;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--first-color);
+}
+.menu a:hover{
+    color: var(--white);
+    background-color: var(--first-color);
+}
+@media screen and (min-width:64rem){
+    .menu-btn{ display: none;}
+    .menu{
+        position: static;
+        width: auto;
+        flex-direction: row;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .menu a{ padding: 0 1rem; }
+    .menu a:last-child{padding-right: 0;}
+    .menu a:hover{ background-color: transparent;}
+}
+
+/* MODAL WINDOW */
+.modal{
+    position: fixed;
+    z-index: 9999;
+    /* los 4 valores en cero para que ocupe toda la pantalla */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0; 
+    /* cebtramos caja modal-content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    background-color: var(--black-alpha-color);
+    transition: all .1s;
+}
+.modal-content{
+    /* Este relative es porque luego a el icono de close le vamos a dar position absolute */
+    position: relative;
+}
+.modal-close{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+.modal-close > svg{
+    width: 3rem;
+    height: 3rem;
+    fill: var(--first-color);
+}
+/* Esta pseudo clase :target hace que se apliquen estos estilos cuando el target de la pagina este en el id elegido */
+/* [id|="trabajo"] este selector de css avanzado va a indicar que se active el target cuando la clase modal tenga dentro un elemento con id que COMIENCE con la palabra trabajo */
+.modal[id|="trabajo"]:target{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+/*Componente Bar Progress */
+progress{
+    width: 100%;
+    height: 1rem;
+    background-color: var(--gray-color);
+}
+progress::-webkit-progress-bar{
+    background-color: var(--gray-color)
+}
+progress::-webkit-progress-value{
+    background-color: var(--gray-dark-color);
+}
+progress::-moz-progress-bar{
+    background-color: var(--gray-dark-color)
+}
+
+.progress{
+    margin: 1rem auto;
+}
+.progress > p{
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: .85rem;
+}
+
+
+/* Utilities  */
+/* Clases de css utilitarias que de un proyecto a otro me los puedo llevar y utilizarlas.EJ: clase para:borde redondeado, color de letra, alineacion,etc */
+.avatar{
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+}
+.box-shadow-1{ 
+    box-shadow:.25rem .25rem 1rem rgba(0, 0, 0, 0.25); 
+}
+.bg-gray-light{ background-color: var(--gray-color);}
+.btn{
+    display: inline-block;
+    width: 12.5rem;
+    border-radius: .5rem;
+    padding: 1rem;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    background-color: var(--first-color);
+    color: var(--white);
+}
+.container{
+    margin: 0 auto;
+    max-width: var(--max-width);
+}
+.gray-scale{ filter: grayscale(1);}
+.none{ display: none; }
+.section{ padding: 2rem 1rem;}
+.section-title{
+    border-top: thin solid var(--first-color);
+    border-bottom: thin solid var(--first-color);
+    margin: 2rem auto;
+    padding: 1rem 0;
+    width: 250px;
+    color: var(--title-color);
+    text-align: center;
+}
+.text-first-color{
+    color: var(--first-color);
+}
+.text-left{ text-align: left;}
+.text-center{ text-align: center;}
+.text-right{ text-align: right;}
+.text-justify{ text-align: justify;}
+
+@media screen and (min-width:64rem){
+    .full-lg-screen{
+        /* Cuando se cumpla la media querie, esa section ocupa toda la pantalla */
+        width: 100%;
+        min-height: 100vh;
+    }
+    .text-lg-left{ text-align: left;}
+    .text-lg-center{ text-align: center;}
+    .text-lg-right{ text-align: right;}
+    .text-lg-justify{ text-align: justify;}
+}
+
+/* Estilos particulares para este proyecto en particular */
+.about > article { margin-bottom: 2rem;}
+.contac-card{
+    margin: 1rem auto;
+    padding: 1rem;
+    width: 100%;
+    height: 9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.contac-card > svg{
+    fill: var(--first-color);
+    width: 2rem;
+    height: 2rem;
+}
+.contac-card > small{
+    margin-top: -1rem;
+}
+footer{
+    background-color: var(--third-color);
+    color: var(--white);
+    text-align: center;
+    padding: .5rem;
+    margin-bottom: var(--header-height);
+}
+.header{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    padding: 1rem;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--second-color);
+}
+.header > .container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo > a{
+    color: var(--first-color);
+    font-weight: bold;
+    font-size: 2rem;
+    text-decoration: none;
+}
+
+.portfolio-card{
+    position: relative;
+    /* Lo transformamos a bloque para que se pongan uno debajo de otro, ya que son enlances y viene con display inline  */
+    display: block;
+    width: 100%;
+}
+.portfolio-card > img{
+    width: 100%;
+    height: 100%;
+    /* Para que no se deforme la proporcion de la imagen */
+    object-fit: cover;
+}
+.portfolio-card-info{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--first-alpha-color);
+    color: var(--white);
+    padding: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s ease-in;
+}
+.portfolio-card:hover .portfolio-card-info{
+    opacity: 1;
+    pointer-events: auto;
+}
+.portfolio-card-info > div{
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    border: thin solid var(--white);
+}
+.portfolio-modal{
+    display: flex;
+    flex-direction: column;
+    max-width: 25rem;
+    background-color: var(--white);
+    padding: 1rem;
+}
+.portfolio-modal  h3{
+    border-bottom: medium solid var(--first-color);
+    padding: .5rem 0;
+    margin: .5rem 0;
+    color: var(--title-color);
+}
+.portfolio-details{
+    display: grid;
+    grid-template-columns: 40% 60%;
+    /* Para definir altura de las filas que se generen automaticamente
+     */
+    grid-auto-rows: 2rem;
+}
+.portfolio-details b{
+    color: var(--first-color);
+}
+.service-card{
+    margin: 1rem 0;
+    padding: 1rem;
+    text-align: center;
+}
+.service-card > svg{
+    fill: var(--first-color);
+    margin-bottom: 1.25rem;
+}
+.social-media > a{
+    padding: 0 .4rem;
+    text-decoration: none;
+}
+.social-media > svg{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+/* Media queries */
+@media screen and (min-width:48rem){
+    /* 768px */
+    .contac-cards{
+        display: grid;
+        /* Aplicamos un 48% para que ese 4% lo podamos separar conel justify-content */
+        grid-template-columns: repeat(2, 48%);
+        justify-content: space-between;
+    }
+    .portfolio > .container{
+        display: grid;
+        grid-template-columns: repeat(2,50%);
+        align-items: center;
+    }
+    .portfolio .section-title{
+        grid-column: 1/3;
+    }
+    .portfolio-modal{
+        flex-direction: row;
+        max-width: 50rem;
+    }
+    .portfolio-info{
+        margin-left: 1rem;
+        align-self: center;
+    }
+    .services > .container{
+        display: grid;
+        grid-template-columns: repeat(2, 45%);
+        justify-content: space-between;
+        align-content: center;
+    }
+    .services .section-title{
+        grid-column: 1/3;
+    }
+}
+@media screen and (min-width:64rem){
+    /* 1024px */
+    .about{
+        display: grid;
+        grid-template-columns: repeat(3, 30%);
+        justify-content: space-between;
+        /* Sirve para que el grid, en el eje y me alinee el contenido al centro*/
+        align-content: center;
+    }
+    .contac-cards{
+        grid-template-columns: repeat(4, 24%);
+    }
+    footer{ margin-bottom: 0;}
+    .header{
+        position: sticky;
+        top: 0;
+        padding: .5rem;
+        /* La altura de las letras era de 2 rem. la altura del header era 4 rem. Con un rem de padding de todos lados quedaba justo al medio. Ahora como redujimos el padding, hay que sacarle a la altura de la caja del header */
+        height: calc(var(--header-height) - 0.5rem);
+    }
+    .portfolio > .container{
+        grid-template-columns: repeat(3,33%);
+    }
+    .portfolio .section-title{
+        grid-column: 1/4;
+    }
+    
+    .services > .container{
+        grid-template-columns: repeat(3, 30%);
+    }
+    .services .section-title{
+        grid-column: 1/4;
+    }
+}
